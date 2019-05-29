@@ -134,3 +134,10 @@ cd auth
 git@github.com:catalyst/moodle-auth_saml2.git saml2
 ```
 Installer et configurer pour que ça marche avec simplesaml.
+
+Passer les méta-données XML dans le convertiseur de ssp pour le mettre dans le dossier `metadata`
+
+S'assurer que `www-data` dans le container idp peut lire le contenu de `cert` pour avoir
+accès à key.
+
+Modifications au IDP dans `ssp-modif/modules/exampleauth` pour ajouter plus de méta-données.
