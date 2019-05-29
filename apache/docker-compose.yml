@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  simplesamlphp:
+    image: php:7.2-apache
+    restart: always
+    #environment:
+    #  - USER_UID=1000
+    #  - USER_GID=1000
+    networks:
+      - web
+    volumes:
+      - ./simplesamlphp:/var/simplesamlphp
+      - ./conf/ssp-apache.conf:/etc/apache2/sites-enabled/000-default.conf
+    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=simplesamlphp"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:idp.nmoller.io"
+      - "traefik.port=80"
+
+networks:
+  web:
+    external: true
