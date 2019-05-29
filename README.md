@@ -36,7 +36,7 @@ docker run -it --rm -u $(id -u):$(id -g) \
 nmolleruq/phpcomposer:7.2 composer install --no-dev
 ```
 
-Modifier `/etc/hosts`:
+Modifier `/etc/hosts` (de manière consistente avec label dans `apache/docker-compose.yml traefik.frontend.rule`:
 ```
 echo '127.0.0.1   idp.nmoller.io' >> /etc/hosts
 ```
