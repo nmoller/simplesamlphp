@@ -60,3 +60,66 @@ apache/simplesamlphp ((05e9943a...))$ cp config-templates/*.php config
 apache/simplesamlphp ((05e9943a...))$ mkdir cert
 apache/simplesamlphp ((05e9943a...))$ openssl req -newkey rsa:2048 -new -x509 -days 3652 -nodes -out cert/saml.crt -keyout cert/saml.pem
 ```
+
+
+### SimpleSamlPhp config
+`authsources.php` :
+
+```
+/*
+Sans ça id du service n'est pas défini... Essai d'abord dans 'example-userpass'
+*/
+'SimpleSAML\Module\exampleautth\Auth\Sourc\External.AuthId' => [
+        'exampleauth:External',
+],
+
+'example-userpass' => [
+    'exampleauth:UserPass',
+
+    // Give the user an option to save their username for future login attempts
+    // And when enabled, what should the default be, to save the username or not
+    //'remember.username.enabled' => false,
+    //'remember.username.checked' => false,
+    
+    'student:studentpass' => [
+        'uid' => ['test'],
+        'eduPersonAffiliation' => ['member', 'student'],
+        'name' => ['Student Name'],
+        'mail' => ['somestudent@example.org'],
+        'type' => ['student'],
+    ],
+    'employee:employeepass' => [
+        'uid' => ['employee'],
+        'eduPersonAffiliation' => ['member', 'employee'],
+    ],
+    
+],
+```
+
+Pour configurer idp:
+`metadata/saml20-idp-hosted.php`:
+```
+<?php
+$metadata['__DYNAMIC:1__'] = [
+    /*
+     * The hostname for this IdP. This makes it possible to run multiple
+     * IdPs from the same configuration. '__DEFAULT__' means that this one
+     * should be used by default.
+     */
+    'host' => '__DEFAULT__',
+
+    /*
+     * The private key and certificate to use when signing responses.
+     * These are stored in the cert-directory.
+     */
+    'privatekey' => 'saml.pem',
+    'certificate' => 'saml.crt',
+
+    /*
+     * The authentication source which should be used to authenticate the
+     * user. This must match one of the entries in config/authsources.php.
+     */
+    'auth' => 'example-userpass',
+    // 'auth' => 'SimpleSAML\Module\exampleautth\Auth\Sourc\External.AuthId'
+];
+```
