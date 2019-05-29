@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  moodle:
+    image: nmolleruq/moouqamtest:0.0.37
+    restart: always
+    environment:
+      MDL_DBTYPE: mysqli
+      MDL_DBHOST: mysqlserver
+      MDL_DBNAME: coursv3
+      MDL_DBUSER: root
+      MDL_DBPASS: root
+      MDL_WWWROOT: 'http://moodle.nmoller.io'
+      MDL_MEMSESSION: memsession
+      MDL_DATAROOT: '/var/www/moodledata'
+      MDL_LOCALCACHEDIR: '/tmp/moodle'
+    networks:
+      - web
+    volumes:
+      - ./moodle:/var/www/html
+    
+    labels:
+      - "traefik.enable=true"
+      - "traefik.backend=moodle"
+      - "traefik.docker.network=web"
+      - "traefik.frontend.rule=Host:moodle.nmoller.io"
+      - "traefik.port=80"
+
+    links:
+      - mysqlserver
+      - memsession
+
+  mysqlserver:
+    image: heathrow/mysql:5.7 #mysql:5.6
+    # Besoin de plus de paramètres
+    networks:
+      - web
+    environment:
+      MYSQL_DATABASE: coursv3
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_CHARSET: utf8mb4 
+      MYSQL_COLLATION: utf8mb4_general_ci 
+      MYSQL_INNODB_LARGE_PREFIX: 1
+      
+  memsession:
+    image: memcached
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

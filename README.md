@@ -123,3 +123,14 @@ $metadata['__DYNAMIC:1__'] = [
     // 'auth' => 'SimpleSAML\Module\exampleautth\Auth\Sourc\External.AuthId'
 ];
 ```
+
+### Installer auth_saml2
+
+Cloner moodle, cloner configphp (checkout branche k8s, commenter `$CFG->sslproxy = true;`)
+
+Dossier clone moodle
+```
+cd auth
+git@github.com:catalyst/moodle-auth_saml2.git saml2
+```
+Installer et configurer pour que ça marche avec simplesaml.
