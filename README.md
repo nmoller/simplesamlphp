@@ -141,3 +141,7 @@ S'assurer que `www-data` dans le container idp peut lire le contenu de `cert` po
 accès à key.
 
 Modifications au IDP dans `ssp-modif/modules/exampleauth` pour ajouter plus de méta-données.
+
+POur garder la trace:
+
+https://openconext.org/document/application-developers/authentication-using-saml/idp-simplesamlphp/
